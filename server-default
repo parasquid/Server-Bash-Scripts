@@ -1,0 +1,50 @@
+#!usr/bin/bash
+
+# security measures:
+# - change ssh port to 20022
+sed -i 's/Port 22/Port 20022/' /etc/ssh/sshd_config
+# - disallow root login
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+# - disallow password auth
+cat >> /etc/ssh/sshd_config << EOF
+PasswordAuthentication no
+AllowUsers mvdev
+EOF
+
+echo "mvdev:mvdev:1000:1000::/home/mvdev:/bin/bash" | newusers
+cp -a /etc/skel/.[a-z]* /home/mvdev/
+chown -R mvdev:www-data /home/mvdev/
+# some funky permissions stuff
+# Add to sudoers(?)
+echo "mvdev    ALL=NOPASSWD: ALL" >> /etc/sudoers
+mkdir /home/mvdev/.ssh
+chmod -R 600 /home/mvdev/.ssh/
+touch /home/mvdev/.ssh/authorized_keys 
+cat > /home/mvdev/.ssh/authorized_keys << EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA1tpQvqm1XmxvIrlsXpDgAz04wj/us2ESCM9tetYiNjXsVaiYRq30j8TKIpLGGBhJRYSTP/HwD9Vxrbcn3/E9hVylLwCcrVYoigAOAwzBXDANEvHqZa18/TkrJAa7SNvgiXYkdxecISCDgBvooZT496X3VOD3YEo/zUaM6aYMXsbluFAjD0al0mEn1MYYmnxuRVtZwyKl8ccZ4Zd0OEL/unx9mePot71sPh9pYZ1LGtA4qLsYj3VmwQeYlWYfFMevtoAWjWP8mxAAC7GKoo4b7+zRygTX/FymERSFZvzxIAmJh2ZRJ+xG8HW5T31H24YC1uGYRfOYfH6QYIcQOy33gw== calvin@calvin-laptop
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAooCc65MqkbhEjw+ZZcOibVqLaxWxubFUwy+nqGxXX1irZHsvh1iDp0Lqq4Tik3uzHg54X1GnOkOu2LxaSZW2zlT7oi5qaor84kvJmb3LcCqoSqKmWuK0x77fSi0jdJW4v7vfwg5Qeb3TKlRdwO9i3/N+qTyw+lk2OINYkxcJf+XfeAsMsHjbvNMPe2gbdZmuN6tOXIuP16X0XLfWHrYtZSMWhgw3+eIX8rIk04qsZUEh0aI9pBnpPpP5pOh/sT6NiFO5YWr4S6OkTCfk/ZGXtU29L2QTTTaW8I6CPu/2Pc70JVheHdf8boMk+NNceUt6+3WEHZASspyX2b4oddRL5Q== tristan@mindvalley.com
+ssh-rsa 
+EOF
+
+/etc/init.d/ssh restart
+chown -R mvdev /home/mvdev/
+chmod 700 /home/mvdev/.ssh
+chmod 600 /home/mvdev/.ssh/authorized_keys
+
+cat >> /etc/apt/sources.list << EOF
+deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+EOF
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+
+apt-get update
+apt-get -y dist-upgrade
+
+
+apt-get -y install htop screen curl subversion php5-cli git-core nginx build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison ruby-full mongodb-10gen
+
+sudo bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+source /etc/profile
+type rvm | head -1
+rvm install ruby-1.9.3-p0
+rvm --default use 1.9.3
