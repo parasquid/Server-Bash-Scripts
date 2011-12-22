@@ -41,7 +41,7 @@ apt-get update
 apt-get -y dist-upgrade
 
 
-apt-get -y install htop screen curl subversion php5-cli git-core nginx build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison ruby-full mongodb-10gen libmysqlclient-dev ibmemcached-dev libsasl2-dev imagemagick libmagick9-dev libtag1-dev
+apt-get -y install htop screen curl subversion php5-cli git-core nginx build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison ruby-full mongodb-10gen libmysqlclient-dev libmemcached-dev libsasl2-dev imagemagick libmagick9-dev libtag1-dev libpq-dev
 
 sudo bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
 source /etc/profile
