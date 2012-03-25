@@ -49,3 +49,8 @@ source /etc/profile
 type rvm | head -1
 rvm install ruby-1.9.3-p0
 rvm --default use 1.9.3-p0
+
+
+
+# usage:
+# bash < <(curl -s https://raw.github.com/parasquid/Server-Bash-Scripts/master/tristan)
