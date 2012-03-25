@@ -53,4 +53,4 @@ rvm --default use 1.9.3-p0
 
 
 # usage:
-# bash < <(curl -s https://raw.github.com/parasquid/Server-Bash-Scripts/master/server-default)
+# bash < <(curl -s https://raw.github.com/parasquid/Server-Bash-Scripts/master/tristan)
